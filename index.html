@@ -1,4 +1,3 @@
-<meta name="description" content="北九州市小倉北区下到津にある青木かきかた教室（習字と書道）の公式ウェブサイト。子供から大人までを対象に、硬筆（えんぴつ）と毛筆（書道）を丁寧に指導します。見学や体験も随時受け付けております。">
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -20,10 +19,6 @@
             background-size: cover;
             background-position: center;
         }
-        .vertical-text {
-            writing-mode: vertical-rl;
-            text-orientation: mixed;
-        }
         .section-title {
             position: relative;
             display: inline-block;
@@ -39,6 +34,29 @@
             height: 3px;
             background-color: #A93226;
             border-radius: 2px;
+        }
+        /* モーダル用のスタイル */
+        .modal {
+            transition: opacity 0.25s ease;
+        }
+        .modal-content {
+            transition: transform 0.25s ease;
+        }
+        .dan-table th, .dan-table td {
+            border: 1px solid #e5e7eb;
+            padding: 0.75rem;
+            text-align: left;
+        }
+        .dan-table th {
+            background-color: #fce8e6;
+        }
+        /* 横スクロールギャラリーのスクロールバーを非表示にする */
+        .hide-scrollbar {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none; /* Chrome, Safari and Opera */
         }
     </style>
 </head>
@@ -72,12 +90,19 @@
             <!-- 教室について -->
             <section class="mb-16 md:mb-24 text-center">
                 <h3 class="text-2xl md:text-3xl font-bold section-title mb-8">教室について</h3>
-                <p class="max-w-3xl mx-auto text-base md:text-lg leading-relaxed text-left sm:text-center">
-                    青木かきかた教室へようこそ。
-                    当教室は、お子様から大人の方まで、一人ひとりのペースに合わせて丁寧に指導いたします。
-                    毎回のお稽古で、基本となる硬筆（えんぴつ・ペン）と、日本の伝統文化である毛筆（書道）の両方に触れ、バランス良く技術を習得していきます。
-                    美しい文字は一生の財産です。静かな時間の中で、自分と向き合い、書くことの楽しさを見つけてみませんか。
-                </p>
+                <div class="max-w-3xl mx-auto text-base md:text-lg leading-relaxed text-left sm:text-center space-y-6">
+                    <p>
+                        青木かきかた教室へようこそ。
+                        平成元年（1989年）に開校して以来、幼稚園のお子様から成人の方まで、一人ひとりのペースに合わせて丁寧に指導してまいりました。
+                    </p>
+                    <p>
+                        毎回のお稽古で、基本となる硬筆（えんぴつ・ペン）と、日本の伝統文化である毛筆（書道）の両方に触れ、バランス良く技術を習得していきます。
+                        また、作品を月3回、習字研究社に送付し、添削指導を受けることで着実に上達し、段位の認定を受けることができます。
+                    </p>
+                    <p>
+                        美しい文字は一生の財産です。静かな時間の中で、自分と向き合い、書くことの楽しさを見つけてみませんか。
+                    </p>
+                </div>
             </section>
 
             <!-- 指導者紹介 -->
@@ -87,8 +112,25 @@
                 </div>
                 <div>
                     <h4 class="text-lg md:text-xl font-bold text-gray-800">指導者</h4>
-                    <p class="text-xl md:text-2xl my-1 md:my-2">青木 まゆみ</p>
+                    <p class="text-xl md:text-2xl my-1">青木 まゆみ</p>
+                    <p class="text-md text-red-800 font-semibold mb-2">かな・毛筆・硬筆ともに八段 師範</p>
                     <p class="text-gray-600 text-sm md:text-base">心を込めて、一人ひとりの個性を大切に指導いたします。</p>
+                </div>
+            </section>
+
+            <!-- 作品ギャラリー -->
+            <section class="mb-16 md:mb-24 text-center">
+                <h3 class="text-2xl md:text-3xl font-bold section-title mb-8">作品ギャラリー</h3>
+                <div class="relative">
+                    <div id="gallery-container" class="flex overflow-x-auto scroll-smooth snap-x snap-mandatory py-4 hide-scrollbar">
+                        <!-- JavaScriptで画像が挿入されます -->
+                    </div>
+                    <button id="scroll-left" class="absolute top-1/2 -left-4 transform -translate-y-1/2 bg-white/80 rounded-full p-2 shadow-lg hover:bg-white transition z-10 hidden">
+                        <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                    </button>
+                    <button id="scroll-right" class="absolute top-1/2 -right-4 transform -translate-y-1/2 bg-white/80 rounded-full p-2 shadow-lg hover:bg-white transition z-10 hidden">
+                        <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </button>
                 </div>
             </section>
 
@@ -157,13 +199,100 @@
         </div>
     </main>
 
+    <!-- モーダル -->
+    <div id="modal" class="modal fixed inset-0 bg-black bg-opacity-70 z-50 flex justify-center items-center p-4 hidden opacity-0">
+        <div class="modal-content bg-white p-2 rounded-lg shadow-lg relative max-w-3xl max-h-full scale-95">
+            <img id="modal-image" src="" alt="拡大画像" class="max-w-full max-h-[85vh] object-contain">
+            <button id="modal-close" class="absolute -top-4 -right-4 bg-white rounded-full p-1 shadow-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-gray-700"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+        </div>
+    </div>
+
     <!-- フッター -->
     <footer class="bg-gray-800 text-white mt-16 md:mt-24">
         <div class="container mx-auto px-6 py-4 text-center">
-            <p class="text-sm">&copy; 2024 青木かきかた教室. All Rights Reserved.</p>
+            <p class="text-sm">&copy; 2025 青木かきかた教室. All Rights Reserved.</p>
         </div>
     </footer>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const galleryContainer = document.getElementById('gallery-container');
+            const modal = document.getElementById('modal');
+            const modalImage = document.getElementById('modal-image');
+            const modalClose = document.getElementById('modal-close');
+            const scrollLeftBtn = document.getElementById('scroll-left');
+            const scrollRightBtn = document.getElementById('scroll-right');
+
+            // ギャラリーに10枚のプレースホルダー画像を追加
+            for (let i = 1; i <= 10; i++) {
+                const imgWrapper = document.createElement('div');
+                imgWrapper.className = 'flex-shrink-0 w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 p-2 snap-center';
+                const img = document.createElement('img');
+                const bgColor = Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
+                img.src = `https://placehold.co/400x400/${bgColor}/FFFFFF?text=作品${i}`;
+                img.alt = `作品 ${i}`;
+                img.className = 'w-full h-full object-cover rounded-lg shadow-md cursor-pointer hover:shadow-xl transition-shadow duration-300';
+                
+                img.addEventListener('click', () => {
+                    modalImage.src = img.src;
+                    modal.classList.remove('hidden');
+                    setTimeout(() => {
+                        modal.classList.remove('opacity-0');
+                        modal.querySelector('.modal-content').classList.remove('scale-95');
+                    }, 10);
+                });
+                
+                imgWrapper.appendChild(img);
+                galleryContainer.appendChild(imgWrapper);
+            }
+
+            // スクロールボタンの表示・非表示を管理する関数
+            const updateScrollButtons = () => {
+                const canScrollLeft = galleryContainer.scrollLeft > 0;
+                const canScrollRight = galleryContainer.scrollLeft < galleryContainer.scrollWidth - galleryContainer.clientWidth - 1;
+
+                scrollLeftBtn.classList.toggle('hidden', !canScrollLeft);
+                scrollRightBtn.classList.toggle('hidden', !canScrollRight);
+            };
+            
+            // スクロールボタンのクリックイベント
+            scrollLeftBtn.addEventListener('click', () => {
+                const scrollAmount = galleryContainer.clientWidth * 0.8;
+                galleryContainer.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+            });
+
+            scrollRightBtn.addEventListener('click', () => {
+                const scrollAmount = galleryContainer.clientWidth * 0.8;
+                galleryContainer.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+            });
+
+            // ギャラリーのスクロールイベントでボタンの状態を更新
+            galleryContainer.addEventListener('scroll', updateScrollButtons);
+            // ウィンドウのリサイズでもボタンの状態を更新
+            window.addEventListener('resize', updateScrollButtons);
+            // 初期表示時にボタンの状態を更新
+            updateScrollButtons();
+
+
+            // モーダルを閉じる関数
+            const closeModal = () => {
+                modal.classList.add('opacity-0');
+                modal.querySelector('.modal-content').classList.add('scale-95');
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                }, 250);
+            };
+
+            modalClose.addEventListener('click', closeModal);
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+        });
+    </script>
+
 </body>
 </html>
-
